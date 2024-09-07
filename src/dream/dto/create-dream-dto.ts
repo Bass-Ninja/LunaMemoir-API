@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { MoodEnum } from '../mood.enum';
+import { MoodEnum } from './mood.enum';
+import { SymbolDto } from '../../symbol/dto/symbol-dto';
 
 export class CreateDreamDto {
   @IsNotEmpty()
@@ -10,4 +11,6 @@ export class CreateDreamDto {
 
   @IsEnum(MoodEnum)
   mood: MoodEnum;
+
+  symbols?: SymbolDto[];
 }

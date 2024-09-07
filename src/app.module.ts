@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DreamModule } from './dream/dream.module';
 import { configValidationSchema } from './config.schema';
 import { CommonModule } from './common/common.module';
+import { SymbolModule } from './symbol/symbol.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CommonModule } from './common/common.module';
     AuthModule,
     DreamModule,
     CommonModule,
+    SymbolModule,
   ],
 })
 export class AppModule {}

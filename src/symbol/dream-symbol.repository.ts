@@ -3,28 +3,31 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../auth/user.entity';
 import { UsersRepository } from '../auth/users.repository';
-import { Dream } from './dream.entity';
 import { FilterDto } from '../common/dto/FilterDto';
+import { DreamSymbol } from './symbol.entity';
 
 @Injectable()
-export class DreamRepository extends Repository<Dream> {
+export class DreamSymbolRepository extends Repository<DreamSymbol> {
   constructor(
-    @InjectRepository(Dream)
-    private dreamRepository: Repository<Dream>,
+    @InjectRepository(DreamSymbol)
+    private symbolRepository: Repository<DreamSymbol>,
     private usersRepository: UsersRepository,
   ) {
     super(
-      dreamRepository.target,
-      dreamRepository.manager,
-      dreamRepository.queryRunner,
+      symbolRepository.target,
+      symbolRepository.manager,
+      symbolRepository.queryRunner,
     );
   }
 
-  async getDreams(filterDto: FilterDto, userProp: User): Promise<Dream[]> {
+  async getSymbols(
+    filterDto: FilterDto,
+    userProp: User,
+  ): Promise<DreamSymbol[]> {
     const { search } = filterDto;
     const { username } = userProp;
     const user = await this.usersRepository.findOne({ where: { username } });
-    const query = this.createQueryBuilder('dream');
+    const query = this.createQueryBuilder('symbol');
 
     query.andWhere({ user });
     if (search) {

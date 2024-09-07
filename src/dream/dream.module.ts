@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { DreamService } from './dream.service';
 import { DreamController } from './dream.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,10 +8,15 @@ import { AuthModule } from '../auth/auth.module';
 import { DreamRepository } from './dream.repository';
 import { UsersRepository } from '../auth/users.repository';
 import { JwtService } from '@nestjs/jwt';
+import { SymbolModule } from '../symbol/symbol.module';
 
 @Module({
   providers: [DreamService, DreamRepository, JwtService, UsersRepository],
   controllers: [DreamController],
-  imports: [TypeOrmModule.forFeature([Dream, User]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Dream, User]),
+    AuthModule,
+    forwardRef(() => SymbolModule),
+  ],
 })
 export class DreamModule {}

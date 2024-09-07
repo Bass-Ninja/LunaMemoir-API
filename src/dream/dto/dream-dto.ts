@@ -1,4 +1,4 @@
-import { Expose, Transform, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { UserDto } from '../../auth/dto/user-dto';
 
 export class DreamDto {
@@ -6,7 +6,7 @@ export class DreamDto {
   @Expose() title: string;
   @Expose() description: string;
   @Expose() mood: string;
-  @Expose() tags?: string[];
-  @Type(() => UserDto) // Ensure UserDto is used
+  //@Expose() symbols: SymbolDto[];
+  @Type(() => UserDto)
   user: UserDto;
 }
