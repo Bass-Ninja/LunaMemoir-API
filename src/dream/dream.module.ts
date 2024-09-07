@@ -5,9 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Dream } from './dream.entity';
 import { User } from '../auth/user.entity';
 import { AuthModule } from '../auth/auth.module';
+import { DreamRepository } from './dream.repository';
+import { UsersRepository } from '../auth/users.repository';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  providers: [DreamService],
+  providers: [DreamService, DreamRepository, JwtService, UsersRepository],
   controllers: [DreamController],
   imports: [TypeOrmModule.forFeature([Dream, User]), AuthModule],
 })

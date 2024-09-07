@@ -12,7 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  // eslint-disable-next-line
-  @OneToMany((_type) => Dream, (dream) => dream.user, { eager: true })
+  @OneToMany(() => Dream, (dream) => dream.user)
   dreams: Dream[];
 }

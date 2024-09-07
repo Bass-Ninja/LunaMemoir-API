@@ -18,16 +18,13 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "schema:sync": "yarn typeorm schema:sync",
     "typeorm:cache": "yarn typeorm cache:clear",
     "schema:drop": "yarn typeorm -d ./src/database/datasource.ts schema:drop",
     "migration:create": "yarn typeorm migration:create ./src/database/migrations/schema-update",
-
     "@comment migration:generate": "add -p ./src/database/migrations/MigrationName when running generate",
-    "migration:generate": "typeorm migration:generate -d ./src/database/datasource.ts",
-
+    "migration:generate": "yarn typeorm migration:generate -d ./src/database/datasource.ts",
     "migration:show": "yarn typeorm migration:show -d ./src/database/datasource.ts",
     "migration:run": "yarn typeorm migration:run -d ./src/database/datasource.ts",
     "migration:revert": "yarn typeorm migration:revert -d ./src/database/datasource.ts"
@@ -42,12 +39,14 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.4.1",
+    "@nestjs/swagger": "^7.4.0",
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.4.1",
     "@types/hapi__joi": "^17.1.14",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "moment": "^2.30.1",
     "nodemailer": "^6.9.14",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

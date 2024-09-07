@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DreamModule } from './dream/dream.module';
 import { configValidationSchema } from './config.schema';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { configValidationSchema } from './config.schema';
     }),
     AuthModule,
     DreamModule,
+    CommonModule,
   ],
 })
 export class AppModule {}

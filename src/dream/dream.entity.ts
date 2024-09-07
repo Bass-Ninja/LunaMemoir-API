@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { MoodEnum } from './mood.enum';
 import { User } from '../auth/user.entity';
 
@@ -16,12 +23,13 @@ export class Dream {
   @Column('simple-array')
   tags: string[];
 
-  @Column()
+  @CreateDateColumn()
   date: Date;
 
   @Column()
   mood: MoodEnum;
 
   @ManyToOne(() => User, (user) => user.dreams)
+  @JoinColumn({ name: 'user' })
   user: User;
 }
