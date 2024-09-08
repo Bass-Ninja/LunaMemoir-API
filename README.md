@@ -31,6 +31,10 @@ $ yarn run start:prod
 # debug mode
 $ yarn run start:debug
 ```
+## Docker
+```
+ docker-compose --env-file .env.stage.prod up --build
+```
 
 ## Test
 
@@ -63,6 +67,9 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
 DB_NAME=luna-memoir
+
+PORT=5000
+HOST=127.0.0.1
 ```
 
 

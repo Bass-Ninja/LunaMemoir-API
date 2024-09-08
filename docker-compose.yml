@@ -13,12 +13,12 @@ services:
     ports:
       - 5432:5432
 
-  luna-memoir-api:
+  luna_memoir_api:
     build: .
     depends_on:
       - db
     restart: always
-    hostname: luna-memoir-api
+    hostname: luna_memoir_api
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -29,17 +29,15 @@ services:
 
     ports:
       - 6001:6001
-  pgadmin:
-    image: dpage/pgadmin4
+
+
+  luna_memoir_adminer:
+    image: adminer
     restart: always
-    container_name: nest-pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    container_name: luna_memoir_adminer
+    hostname: luna_memoir_adminer
     ports:
-      - 5050:80
-    depends_on:
-      - db
+      - 6003:8080
 
 volumes:
   pgdata:

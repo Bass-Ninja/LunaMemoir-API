@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 
 import { DataSource } from 'typeorm';
+import * as process from 'node:process';
 
 dotenv.config({ path: `.env.stage.${process.env.STAGE || 'dev'}` });
 
