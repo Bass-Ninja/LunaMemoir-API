@@ -31,8 +31,11 @@ async function bootstrap() {
   app.getHttpAdapter().get('/swagger-json', (req, res) => {
     res.json(document);
   });
-
-  await app.listen(5000);
+  const PORT = process.env.APP_PORT || 5000;
+  const HOST = process.env.HOST || '127.0.0.1';
+  await app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
+  });
 }
 
 bootstrap();
