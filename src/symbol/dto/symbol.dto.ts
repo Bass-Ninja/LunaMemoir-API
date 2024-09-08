@@ -1,12 +1,15 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class UserDto {
+export class SymbolDto {
   @Expose()
+  @IsOptional()
   @ApiProperty()
-  id: string;
+  id?: string;
 
   @Expose()
+  @IsNotEmpty()
   @ApiProperty()
-  username: string;
+  name: string;
 }

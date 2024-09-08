@@ -4,7 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../auth/user.entity';
 import { UsersRepository } from '../auth/users.repository';
 import { Dream } from './dream.entity';
-import { FilterDto } from '../common/dto/FilterDto';
+import { DreamFilterDto } from './dto/dream-filter.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 
 @Injectable()
 export class DreamRepository extends Repository<Dream> {
@@ -20,11 +21,17 @@ export class DreamRepository extends Repository<Dream> {
     );
   }
 
-  async getDreams(filterDto: FilterDto, userProp: User): Promise<Dream[]> {
-    const { search } = filterDto;
+  async getDreams(
+    filterDto: DreamFilterDto,
+    userProp: User,
+  ): Promise<PaginatedResponseDto<Dream>> {
+    const { page, pageSize, search, mood, category } = filterDto;
     const { username } = userProp;
     const user = await this.usersRepository.findOne({ where: { username } });
-    const query = this.createQueryBuilder('dream');
+    const query = this.createQueryBuilder('dream').leftJoinAndSelect(
+      'dream.symbols',
+      'symbols',
+    );
 
     query.andWhere({ user });
     if (search) {
@@ -33,6 +40,20 @@ export class DreamRepository extends Repository<Dream> {
         { search: `%${search}%` },
       );
     }
-    return await query.getMany();
+
+    if (mood) {
+      query.andWhere('dream.mood = :mood', { mood });
+    }
+
+    if (category) {
+      query.andWhere('dream.category = :category', { category });
+    }
+    const totalItems = await query.getCount();
+
+    query.skip((page - 1) * pageSize).take(pageSize);
+
+    const data = await query.getMany();
+
+    return new PaginatedResponseDto(data, totalItems, page, pageSize);
   }
 }

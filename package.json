@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "schema:sync": "yarn typeorm schema:sync",
+    "schema:sync": "yarn typeorm schema:sync -d ./src/database/datasource.ts",
     "typeorm:cache": "yarn typeorm cache:clear",
     "schema:drop": "yarn typeorm -d ./src/database/datasource.ts schema:drop",
     "migration:create": "yarn typeorm migration:create ./src/database/migrations/schema-update",

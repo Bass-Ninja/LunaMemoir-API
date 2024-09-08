@@ -11,6 +11,7 @@ import {
 import { MoodEnum } from './dto/mood.enum';
 import { User } from '../auth/user.entity';
 import { DreamSymbol } from '../symbol/symbol.entity';
+import { DreamCategoryEnum } from './dto/dream-category.enum';
 
 @Entity()
 export class Dream {
@@ -30,8 +31,15 @@ export class Dream {
   @CreateDateColumn()
   date: Date;
 
-  @Column()
+  @Column({ type: 'enum', enum: MoodEnum, default: MoodEnum.OTHER })
   mood: MoodEnum;
+
+  @Column({
+    type: 'enum',
+    enum: DreamCategoryEnum,
+    default: DreamCategoryEnum.OTHER,
+  })
+  category: DreamCategoryEnum;
 
   @ManyToOne(() => User, (user) => user.dreams)
   @JoinColumn({ name: 'user' })
