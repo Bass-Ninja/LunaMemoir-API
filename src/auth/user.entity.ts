@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Dream } from '../dream/dream.entity';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 export class User {
@@ -7,7 +8,14 @@ export class User {
   id: string;
 
   @Column({ unique: true })
-  username: string;
+  @IsEmail()
+  email: string;
+
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
 
   @Column()
   password: string;

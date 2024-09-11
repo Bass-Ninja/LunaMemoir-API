@@ -26,7 +26,7 @@ export class DreamService {
     filterDto: DreamFilterDto,
     user: User,
   ): Promise<PaginatedResponseDto<DreamDto>> {
-    this.logger.log(`Listing dreams for user: ${user.username}`);
+    this.logger.log(`Listing dreams for user: ${user.email}`);
     return plainToInstance(
       PaginatedResponseDto<DreamDto>,
       await this.dreamRepository.getDreams(filterDto, user),
@@ -36,8 +36,8 @@ export class DreamService {
   async getDreamById(id: string, userProp: User): Promise<DreamDto> {
     this.logger.log(`Fetching dream with ID: ${id}`);
 
-    const { username } = userProp;
-    const user = await this.usersRepository.findOne({ where: { username } });
+    const { email } = userProp;
+    const user = await this.usersRepository.findOne({ where: { email } });
     const found = await this.entityManager.findOne(Dream, {
       where: { id: id, user: { id: user.id } },
       relations: ['user'],
@@ -53,11 +53,11 @@ export class DreamService {
     createDreamDto: CreateDreamDto,
     user: User,
   ): Promise<DreamDto> {
-    this.logger.log(`User ${user.username} creating dream`);
+    this.logger.log(`User ${user.email} creating dream`);
     const { title, description, mood, category, symbols } = createDreamDto;
-    const { username } = user;
+    const { email } = user;
     const userEntity = await this.usersRepository.findOne({
-      where: { username },
+      where: { email },
     });
     const symbolsEntities =
       await this.symbolService.getOrCreateSymbols(symbols);

@@ -8,5 +8,13 @@ export class UserDto {
 
   @Expose()
   @ApiProperty()
-  username: string;
+  email: string;
+
+  @Expose()
+  @ApiProperty()
+  firstName: string;
+
+  @Expose()
+  @ApiProperty()
+  lastName: string;
 }

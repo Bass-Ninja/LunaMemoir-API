@@ -1,7 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import {
+  AuthCredentialsDto,
+  LoginCredentialsDto,
+} from './dto/auth-credentials.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UserDto } from './dto/user-dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -14,14 +18,16 @@ export class AuthController {
   // }
   //
 
-  @Post('signup')
-  async signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  @Post('register')
+  async signUp(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<UserDto> {
     return await this.authService.createUser(authCredentialsDto);
   }
 
-  @Post('signin')
+  @Post('login')
   async signIn(
-    @Body() authCredentialsDto: AuthCredentialsDto,
+    @Body() authCredentialsDto: LoginCredentialsDto,
   ): Promise<{ accessToken: string }> {
     return await this.authService.signIn(authCredentialsDto);
   }

@@ -26,8 +26,8 @@ export class DreamRepository extends Repository<Dream> {
     userProp: User,
   ): Promise<PaginatedResponseDto<Dream>> {
     const { page, pageSize, search, mood, category } = filterDto;
-    const { username } = userProp;
-    const user = await this.usersRepository.findOne({ where: { username } });
+    const { email } = userProp;
+    const user = await this.usersRepository.findOne({ where: { email } });
     const query = this.createQueryBuilder('dream').leftJoinAndSelect(
       'dream.symbols',
       'symbols',

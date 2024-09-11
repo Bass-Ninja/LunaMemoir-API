@@ -30,6 +30,14 @@ services:
     ports:
       - 6001:6001
 
+  luna_memoir_frontend:
+    build:
+      context: ../luna-memoir-frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ../luna-memoir-frontend/dist/luna-memoir-frontend/browser:/usr/share/nginx/html/
+    ports:
+      - 6002:80
 
   luna_memoir_adminer:
     image: adminer

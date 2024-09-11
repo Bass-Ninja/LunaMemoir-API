@@ -9,9 +9,15 @@ import {
 export class AuthCredentialsDto {
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  username: string;
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  lastName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  email: string;
 
   @IsNotEmpty()
   @IsString()
@@ -20,5 +26,15 @@ export class AuthCredentialsDto {
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Password is too weak',
   })
+  password: string;
+}
+
+export class LoginCredentialsDto {
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
   password: string;
 }

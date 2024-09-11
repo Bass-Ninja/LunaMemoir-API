@@ -31,6 +31,12 @@ async function bootstrap() {
   app.getHttpAdapter().get('/swagger-json', (req, res) => {
     res.json(document);
   });
+  app.enableCors({
+    origin: '*', // Allows all origins; replace with specific origins if needed
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
+    allowedHeaders: 'Content-Type, Accept', // Allowed headers
+  });
+
   const PORT = process.env.APP_PORT || 5000;
   const HOST = process.env.HOST || '127.0.0.1';
   await app.listen(PORT, HOST, () => {
