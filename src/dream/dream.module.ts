@@ -9,6 +9,7 @@ import { DreamRepository } from './dream.repository';
 import { UsersRepository } from '../auth/users.repository';
 import { JwtService } from '@nestjs/jwt';
 import { SymbolModule } from '../symbol/symbol.module';
+import { DreamCategoryModule } from '../dream-category/dream-category.module';
 
 @Module({
   providers: [DreamService, DreamRepository, JwtService, UsersRepository],
@@ -17,6 +18,7 @@ import { SymbolModule } from '../symbol/symbol.module';
     TypeOrmModule.forFeature([Dream, User]),
     AuthModule,
     forwardRef(() => SymbolModule),
+    forwardRef(() => DreamCategoryModule),
   ],
 })
 export class DreamModule {}

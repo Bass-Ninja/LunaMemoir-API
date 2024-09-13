@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Res,
   UseGuards,
@@ -21,6 +22,7 @@ import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { Response } from 'express';
 import { SymbolDto } from '../symbol/dto/symbol.dto';
 import { UserDto } from '../auth/dto/user-dto';
+import { DreamCategoryDto } from '../dream-category/dto/dream-category.dto';
 
 @Controller('dream')
 @ApiTags('Dream')
@@ -29,7 +31,13 @@ import { UserDto } from '../auth/dto/user-dto';
 export class DreamController {
   constructor(private dreamService: DreamService) {}
 
-  @ApiExtraModels(DreamDto, UserDto, SymbolDto, PaginatedResponseDto)
+  @ApiExtraModels(
+    DreamDto,
+    UserDto,
+    SymbolDto,
+    DreamCategoryDto,
+    PaginatedResponseDto,
+  )
   @ApiArrayResponse(DreamDto)
   @Get()
   async getDreams(
@@ -67,7 +75,7 @@ export class DreamController {
     return await this.dreamService.getDreamById(id, user);
   }
 
-  @ApiExtraModels(CreateDreamDto, SymbolDto)
+  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto)
   @ApiDtoResponse(CreateDreamDto)
   @Post()
   async createDream(
@@ -75,5 +83,15 @@ export class DreamController {
     @GetUser() user: User,
   ): Promise<DreamDto> {
     return await this.dreamService.createDream(createDreamDto, user);
+  }
+
+  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto)
+  @ApiDtoResponse(CreateDreamDto)
+  @Put('/:id')
+  async updateDream(
+    @Param('id') id: string,
+    @Body() updateDreamDto: CreateDreamDto,
+  ): Promise<DreamDto> {
+    return await this.dreamService.updateDream(id, updateDreamDto);
   }
 }

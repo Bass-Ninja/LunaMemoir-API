@@ -6,6 +6,7 @@ import { DreamModule } from './dream/dream.module';
 import { configValidationSchema } from './config.schema';
 import { CommonModule } from './common/common.module';
 import { SymbolModule } from './symbol/symbol.module';
+import { DreamCategoryModule } from './dream-category/dream-category.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { SymbolModule } from './symbol/symbol.module';
     DreamModule,
     CommonModule,
     SymbolModule,
+    DreamCategoryModule,
   ],
 })
 export class AppModule {}

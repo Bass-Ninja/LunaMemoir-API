@@ -10,6 +10,7 @@ import { EntityManager } from 'typeorm';
 import { SymbolService } from '../symbol/symbol.service';
 import { DreamFilterDto } from './dto/dream-filter.dto';
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { DreamCategoryService } from '../dream-category/dream-category.service';
 
 @Injectable()
 export class DreamService {
@@ -20,6 +21,7 @@ export class DreamService {
     private readonly usersRepository: UsersRepository,
     private readonly entityManager: EntityManager,
     private readonly symbolService: SymbolService,
+    private readonly dreamCategoryService: DreamCategoryService,
   ) {}
 
   async getDreams(
@@ -40,7 +42,7 @@ export class DreamService {
     const user = await this.usersRepository.findOne({ where: { email } });
     const found = await this.entityManager.findOne(Dream, {
       where: { id: id, user: { id: user.id } },
-      relations: ['user'],
+      relations: ['category', 'symbols'],
     });
     if (!found) {
       this.logger.error(`Dream with "${id} not found."`);
@@ -61,12 +63,14 @@ export class DreamService {
     });
     const symbolsEntities =
       await this.symbolService.getOrCreateSymbols(symbols);
-
+    console.log(category);
+    const categoryEntity =
+      await this.dreamCategoryService.getOrCreateDreamCategory(category);
     const dream: Dream = this.dreamRepository.create({
       title,
       description,
       mood,
-      category,
+      category: categoryEntity,
       symbols: symbolsEntities,
     });
     dream.user = userEntity;
@@ -78,5 +82,20 @@ export class DreamService {
       throw error;
     }
     return plainToInstance(DreamDto, dream);
+  }
+
+  async updateDream(
+    id: string,
+    updateDreamDto: CreateDreamDto,
+  ): Promise<DreamDto> {
+    await this.dreamRepository.update({ id }, updateDreamDto);
+    const updatedDream = await this.dreamRepository.findOne({
+      where: { id: id },
+      relations: ['category'],
+    });
+    if (!updatedDream) {
+      throw new Error('Dream not found');
+    }
+    return plainToInstance(DreamDto, updatedDream);
   }
 }

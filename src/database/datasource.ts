@@ -16,7 +16,7 @@ export default new DataSource({
   dropSchema: false,
   logging: false,
   logger: 'file',
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: ['src/database/migrations/**/*.ts'],
   migrationsTableName: 'migration_table',
 });

@@ -1,11 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiExtraModels,
-  ApiResponse,
-  ApiTags,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/strategy/jwt-auth.guard';
 import { SymbolService } from './symbol.service';
 import { FilterDto } from '../common/dto/filter.dto';

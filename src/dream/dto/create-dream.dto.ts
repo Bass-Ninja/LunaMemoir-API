@@ -2,8 +2,8 @@ import { IsEnum, IsNotEmpty, ValidateNested } from 'class-validator';
 import { MoodEnum } from './mood.enum';
 import { SymbolDto } from '../../symbol/dto/symbol.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { DreamCategoryEnum } from './dream-category.enum';
 import { Type } from 'class-transformer';
+import { DreamCategoryDto } from '../../dream-category/dto/dream-category.dto';
 
 export class CreateDreamDto {
   @IsNotEmpty()
@@ -18,9 +18,10 @@ export class CreateDreamDto {
   @ApiProperty({ enum: MoodEnum })
   mood: MoodEnum;
 
-  @IsEnum(DreamCategoryEnum)
-  @ApiProperty({ enum: DreamCategoryEnum })
-  category: DreamCategoryEnum;
+  @ApiProperty()
+  @ValidateNested()
+  @Type(() => DreamCategoryDto)
+  category: DreamCategoryDto;
 
   @ValidateNested({ each: true })
   @Type(() => SymbolDto)

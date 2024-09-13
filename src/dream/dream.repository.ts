@@ -28,10 +28,9 @@ export class DreamRepository extends Repository<Dream> {
     const { page, pageSize, search, mood, category } = filterDto;
     const { email } = userProp;
     const user = await this.usersRepository.findOne({ where: { email } });
-    const query = this.createQueryBuilder('dream').leftJoinAndSelect(
-      'dream.symbols',
-      'symbols',
-    );
+    const query = this.createQueryBuilder('dream')
+      .leftJoinAndSelect('dream.symbols', 'symbols')
+      .leftJoinAndSelect('dream.category', 'category');
 
     query.andWhere({ user });
     if (search) {

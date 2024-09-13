@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../auth/user.entity';
 import { UsersRepository } from '../auth/users.repository';
 import { FilterDto } from '../common/dto/filter.dto';
 import { DreamSymbol } from './symbol.entity';

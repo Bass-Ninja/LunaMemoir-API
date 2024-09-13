@@ -3,8 +3,8 @@ import { UserDto } from '../../auth/dto/user-dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { SymbolDto } from '../../symbol/dto/symbol.dto';
 import { MoodEnum } from './mood.enum';
-import { DreamCategoryEnum } from './dream-category.enum';
 import { IsEnum } from 'class-validator';
+import { DreamCategoryDto } from '../../dream-category/dto/dream-category.dto';
 
 export class DreamDto {
   @Expose()
@@ -25,9 +25,9 @@ export class DreamDto {
   mood: MoodEnum;
 
   @Expose()
-  @IsEnum(DreamCategoryEnum)
   @ApiProperty()
-  category: DreamCategoryEnum;
+  @Type(() => DreamCategoryDto)
+  category: DreamCategoryDto;
 
   @Expose()
   @ApiProperty()
