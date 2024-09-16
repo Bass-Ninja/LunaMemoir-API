@@ -2,9 +2,8 @@ import { Expose, Type } from 'class-transformer';
 import { UserDto } from '../../auth/dto/user-dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { SymbolDto } from '../../symbol/dto/symbol.dto';
-import { MoodEnum } from './mood.enum';
-import { IsEnum } from 'class-validator';
 import { DreamCategoryDto } from '../../dream-category/dto/dream-category.dto';
+import { MoodDto } from '../../mood/dto/mood.dto';
 
 export class DreamDto {
   @Expose()
@@ -20,9 +19,9 @@ export class DreamDto {
   description: string;
 
   @Expose()
-  @IsEnum(MoodEnum)
   @ApiProperty()
-  mood: MoodEnum;
+  @Type(() => MoodDto)
+  mood: MoodDto;
 
   @Expose()
   @ApiProperty()

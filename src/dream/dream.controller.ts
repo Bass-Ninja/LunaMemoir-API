@@ -23,6 +23,7 @@ import { Response } from 'express';
 import { SymbolDto } from '../symbol/dto/symbol.dto';
 import { UserDto } from '../auth/dto/user-dto';
 import { DreamCategoryDto } from '../dream-category/dto/dream-category.dto';
+import { MoodDto } from '../mood/dto/mood.dto';
 
 @Controller('dream')
 @ApiTags('Dream')
@@ -75,7 +76,7 @@ export class DreamController {
     return await this.dreamService.getDreamById(id, user);
   }
 
-  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto)
+  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto, MoodDto)
   @ApiDtoResponse(CreateDreamDto)
   @Post()
   async createDream(
@@ -85,7 +86,7 @@ export class DreamController {
     return await this.dreamService.createDream(createDreamDto, user);
   }
 
-  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto)
+  @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto, MoodDto)
   @ApiDtoResponse(CreateDreamDto)
   @Put('/:id')
   async updateDream(

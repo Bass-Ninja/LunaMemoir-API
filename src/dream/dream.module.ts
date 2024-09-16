@@ -10,6 +10,7 @@ import { UsersRepository } from '../auth/users.repository';
 import { JwtService } from '@nestjs/jwt';
 import { SymbolModule } from '../symbol/symbol.module';
 import { DreamCategoryModule } from '../dream-category/dream-category.module';
+import { MoodModule } from '../mood/mood.module';
 
 @Module({
   providers: [DreamService, DreamRepository, JwtService, UsersRepository],
@@ -19,6 +20,7 @@ import { DreamCategoryModule } from '../dream-category/dream-category.module';
     AuthModule,
     forwardRef(() => SymbolModule),
     forwardRef(() => DreamCategoryModule),
+    forwardRef(() => MoodModule),
   ],
 })
 export class DreamModule {}

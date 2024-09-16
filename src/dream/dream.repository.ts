@@ -30,7 +30,8 @@ export class DreamRepository extends Repository<Dream> {
     const user = await this.usersRepository.findOne({ where: { email } });
     const query = this.createQueryBuilder('dream')
       .leftJoinAndSelect('dream.symbols', 'symbols')
-      .leftJoinAndSelect('dream.category', 'category');
+      .leftJoinAndSelect('dream.category', 'category')
+      .leftJoinAndSelect('dream.mood', 'mood');
 
     query.andWhere({ user });
     if (search) {

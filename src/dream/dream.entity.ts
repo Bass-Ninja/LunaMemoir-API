@@ -8,10 +8,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MoodEnum } from './dto/mood.enum';
 import { User } from '../auth/user.entity';
 import { DreamSymbol } from '../symbol/symbol.entity';
 import { DreamCategory } from '../dream-category/dream-category.entity';
+import { Mood } from '../mood/mood.entity';
 
 @Entity()
 export class Dream {
@@ -31,8 +31,11 @@ export class Dream {
   @CreateDateColumn()
   date: Date;
 
-  @Column({ type: 'enum', enum: MoodEnum, default: MoodEnum.OTHER })
-  mood: MoodEnum;
+  @ManyToOne(() => Mood, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'mood' })
+  mood: Mood;
 
   @ManyToOne(() => DreamCategory, {
     cascade: true,

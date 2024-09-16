@@ -11,6 +11,7 @@ import { SymbolService } from '../symbol/symbol.service';
 import { DreamFilterDto } from './dto/dream-filter.dto';
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { DreamCategoryService } from '../dream-category/dream-category.service';
+import { MoodService } from '../mood/mood.service';
 
 @Injectable()
 export class DreamService {
@@ -22,6 +23,7 @@ export class DreamService {
     private readonly entityManager: EntityManager,
     private readonly symbolService: SymbolService,
     private readonly dreamCategoryService: DreamCategoryService,
+    private readonly moodService: MoodService,
   ) {}
 
   async getDreams(
@@ -42,7 +44,7 @@ export class DreamService {
     const user = await this.usersRepository.findOne({ where: { email } });
     const found = await this.entityManager.findOne(Dream, {
       where: { id: id, user: { id: user.id } },
-      relations: ['category', 'symbols'],
+      relations: ['category', 'symbols', 'mood'],
     });
     if (!found) {
       this.logger.error(`Dream with "${id} not found."`);
@@ -63,13 +65,13 @@ export class DreamService {
     });
     const symbolsEntities =
       await this.symbolService.getOrCreateSymbols(symbols);
-    console.log(category);
     const categoryEntity =
       await this.dreamCategoryService.getOrCreateDreamCategory(category);
+    const moodEntity = await this.moodService.getOrCreateMood(mood);
     const dream: Dream = this.dreamRepository.create({
       title,
       description,
-      mood,
+      mood: moodEntity,
       category: categoryEntity,
       symbols: symbolsEntities,
     });
@@ -88,14 +90,35 @@ export class DreamService {
     id: string,
     updateDreamDto: CreateDreamDto,
   ): Promise<DreamDto> {
-    await this.dreamRepository.update({ id }, updateDreamDto);
-    const updatedDream = await this.dreamRepository.findOne({
-      where: { id: id },
-      relations: ['category'],
+    const dream = await this.dreamRepository.findOne({
+      where: { id },
+      relations: ['category', 'symbols', 'mood'],
     });
-    if (!updatedDream) {
+
+    if (!dream) {
       throw new Error('Dream not found');
     }
-    return plainToInstance(DreamDto, updatedDream);
+
+    dream.title = updateDreamDto.title;
+    dream.description = updateDreamDto.description;
+
+    if (updateDreamDto.category) {
+      dream.category = await this.dreamCategoryService.getOrCreateDreamCategory(
+        updateDreamDto.category,
+      );
+    }
+
+    if (updateDreamDto.mood) {
+      dream.mood = await this.moodService.getOrCreateMood(updateDreamDto.mood);
+    }
+
+    if (updateDreamDto.symbols) {
+      dream.symbols = await this.symbolService.getOrCreateSymbols(
+        updateDreamDto.symbols,
+      );
+    }
+
+    await this.dreamRepository.save(dream);
+    return plainToInstance(DreamDto, dream);
   }
 }
