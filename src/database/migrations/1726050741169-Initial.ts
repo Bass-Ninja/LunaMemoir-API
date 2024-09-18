@@ -5,7 +5,7 @@ export class Initial1726050741169 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE "user" (
+            CREATE TABLE IF NOT EXISTS "user" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "email" character varying NOT NULL,
                 "firstName" character varying NOT NULL,
@@ -16,7 +16,7 @@ export class Initial1726050741169 implements MigrationInterface {
             )
         `);
         await queryRunner.query(`
-            CREATE TABLE "dream_symbol" (
+            CREATE TABLE IF NOT EXISTS "dream_symbol" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" character varying NOT NULL,
                 CONSTRAINT "PK_f324602f1b76e1f29b4833ff367" PRIMARY KEY ("id")
@@ -39,7 +39,7 @@ export class Initial1726050741169 implements MigrationInterface {
             )
         `);
         await queryRunner.query(`
-            CREATE TABLE "dream" (
+            CREATE TABLE IF NOT EXISTS "dream" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "title" character varying NOT NULL,
                 "description" text NOT NULL,
@@ -51,7 +51,7 @@ export class Initial1726050741169 implements MigrationInterface {
             )
         `);
         await queryRunner.query(`
-            CREATE TABLE "dream_symbols" (
+            CREATE TABLE IF NOT EXISTS "dream_symbols" (
                 "dreamId" uuid NOT NULL,
                 "dreamSymbolId" uuid NOT NULL,
                 CONSTRAINT "PK_a9bc10602f9a3348d8bb72221cd" PRIMARY KEY ("dreamId", "dreamSymbolId")

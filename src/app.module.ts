@@ -8,6 +8,8 @@ import { CommonModule } from './common/common.module';
 import { SymbolModule } from './symbol/symbol.module';
 import { DreamCategoryModule } from './dream-category/dream-category.module';
 import { MoodModule } from './mood/mood.module';
+import { AnalysisModule } from './analysis/analysis.module';
+import { OpenAIModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { MoodModule } from './mood/mood.module';
     SymbolModule,
     DreamCategoryModule,
     MoodModule,
+    AnalysisModule,
+    OpenAIModule,
   ],
 })
 export class AppModule {}
