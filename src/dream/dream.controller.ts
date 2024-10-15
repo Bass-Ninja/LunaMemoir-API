@@ -15,7 +15,7 @@ import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { JwtGuard } from '../auth/strategy/jwt-auth.guard';
 import { CreateDreamDto } from './dto/create-dream.dto';
-import { DreamDto } from './dto/dream.dto';
+import { DreamDto, DreamByCategoryCountDto } from './dto/dream.dto';
 import { ApiArrayResponse, ApiDtoResponse } from '../common/api-decorator';
 import { DreamFilterDto } from './dto/dream-filter.dto';
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
@@ -68,7 +68,7 @@ export class DreamController {
 
   @ApiExtraModels(DreamDto)
   @ApiDtoResponse(DreamDto)
-  @Get('/:id')
+  @Get()
   async getDreamById(
     @Param('id') id: string,
     @GetUser() user: User,
@@ -88,11 +88,26 @@ export class DreamController {
 
   @ApiExtraModels(CreateDreamDto, SymbolDto, DreamCategoryDto, MoodDto)
   @ApiDtoResponse(CreateDreamDto)
-  @Put('/:id')
+  @Put()
   async updateDream(
     @Param('id') id: string,
     @Body() updateDreamDto: CreateDreamDto,
   ): Promise<DreamDto> {
     return await this.dreamService.updateDream(id, updateDreamDto);
+  }
+
+  @ApiExtraModels(
+    DreamDto,
+    UserDto,
+    SymbolDto,
+    DreamCategoryDto,
+    DreamByCategoryCountDto,
+  )
+  @ApiArrayResponse(DreamByCategoryCountDto)
+  @Get('/grouped')
+  async getGroupedDreams(
+    @GetUser() user: User,
+  ): Promise<DreamByCategoryCountDto[]> {
+    return await this.dreamService.getDreamsGroupedByCategory(user);
   }
 }

@@ -4,7 +4,7 @@ import { DreamRepository } from './dream.repository';
 import { Dream } from './dream.entity';
 import { User } from '../auth/user.entity';
 import { CreateDreamDto } from './dto/create-dream.dto';
-import { DreamDto } from './dto/dream.dto';
+import { DreamDto, DreamByCategoryCountDto } from './dto/dream.dto';
 import { plainToInstance } from 'class-transformer';
 import { EntityManager } from 'typeorm';
 import { SymbolService } from '../symbol/symbol.service';
@@ -120,5 +120,37 @@ export class DreamService {
 
     await this.dreamRepository.save(dream);
     return plainToInstance(DreamDto, dream);
+  }
+
+  async getDreamsGroupedByCategory(
+    userProp: User,
+  ): Promise<DreamByCategoryCountDto[]> {
+    const { email } = userProp;
+    const user = await this.usersRepository.findOne({ where: { email } });
+
+    const dreams = await this.dreamRepository.find({
+      where: { user },
+      relations: ['category'],
+    });
+
+    const dreamsGroupedByCategory: { [key: string]: number } = {};
+
+    dreams.forEach((dream) => {
+      const categoryId = dream.category.id;
+
+      if (!dreamsGroupedByCategory[categoryId]) {
+        dreamsGroupedByCategory[categoryId] = 0;
+      }
+
+      dreamsGroupedByCategory[categoryId]++;
+    });
+
+    return Object.keys(dreamsGroupedByCategory).map((categoryId) => ({
+      categoryId,
+      categoryName: dreams.find((dream) => dream.category.id === categoryId)
+        ?.category.name,
+      dreamsCount: dreamsGroupedByCategory[categoryId],
+      totalCount: dreams.length,
+    })) as DreamByCategoryCountDto[]; // Cast to the DTO type
   }
 }

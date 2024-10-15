@@ -38,3 +38,21 @@ export class DreamDto {
   @Type(() => UserDto)
   user: UserDto;
 }
+
+export class DreamByCategoryCountDto {
+  @Expose()
+  @ApiProperty()
+  categoryId: string;
+
+  @Expose()
+  @ApiProperty()
+  categoryName: string;
+
+  @Expose()
+  @ApiProperty()
+  dreamsCount: number;
+
+  @Expose()
+  @ApiProperty()
+  totalCount: number;
+}

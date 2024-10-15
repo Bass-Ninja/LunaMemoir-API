@@ -56,4 +56,16 @@ export class DreamRepository extends Repository<Dream> {
 
     return new PaginatedResponseDto(data, totalItems, page, pageSize);
   }
+
+  async getDreamsByUser(userProp: User): Promise<Dream[]> {
+    const { email } = userProp;
+    const user = await this.usersRepository.findOne({ where: { email } });
+    const query = this.createQueryBuilder('dream')
+      .leftJoinAndSelect('dream.symbols', 'symbols')
+      .leftJoinAndSelect('dream.category', 'category')
+      .leftJoinAndSelect('dream.mood', 'mood');
+
+    query.andWhere({ user });
+    return await query.getMany();
+  }
 }
