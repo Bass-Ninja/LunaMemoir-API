@@ -10,7 +10,7 @@ import { Dream } from './dream.entity';
 import { User } from '../auth/user.entity';
 import { NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { DreamDto, DreamByCategoryCountDto } from './dto/dream.dto';
+import { DreamDto } from './dto/dream.dto';
 import { DreamFilterDto } from './dto/dream-filter.dto';
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { EntityManager } from 'typeorm';
