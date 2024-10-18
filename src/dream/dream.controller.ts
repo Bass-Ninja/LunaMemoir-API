@@ -7,6 +7,7 @@ import {
   Put,
   Query,
   Res,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
@@ -15,7 +16,7 @@ import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { JwtGuard } from '../auth/strategy/jwt-auth.guard';
 import { CreateDreamDto } from './dto/create-dream.dto';
-import { DreamDto, DreamByCategoryCountDto } from './dto/dream.dto';
+import { DreamByCategoryCountDto, DreamDto } from './dto/dream.dto';
 import { ApiArrayResponse, ApiDtoResponse } from '../common/api-decorator';
 import { DreamFilterDto } from './dto/dream-filter.dto';
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
@@ -24,10 +25,12 @@ import { SymbolDto } from '../symbol/dto/symbol.dto';
 import { UserDto } from '../auth/dto/user-dto';
 import { DreamCategoryDto } from '../dream-category/dto/dream-category.dto';
 import { MoodDto } from '../mood/dto/mood.dto';
+import { HttpExceptionFilter } from '../common/http-exception.filter';
 
 @Controller('dream')
 @ApiTags('Dream')
 @UseGuards(JwtGuard)
+@UseFilters(new HttpExceptionFilter())
 @ApiBearerAuth('Bearer')
 export class DreamController {
   constructor(private dreamService: DreamService) {}
@@ -68,7 +71,7 @@ export class DreamController {
 
   @ApiExtraModels(DreamDto)
   @ApiDtoResponse(DreamDto)
-  @Get()
+  @Get('/:id')
   async getDreamById(
     @Param('id') id: string,
     @GetUser() user: User,

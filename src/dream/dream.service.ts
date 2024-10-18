@@ -4,7 +4,7 @@ import { DreamRepository } from './dream.repository';
 import { Dream } from './dream.entity';
 import { User } from '../auth/user.entity';
 import { CreateDreamDto } from './dto/create-dream.dto';
-import { DreamDto, DreamByCategoryCountDto } from './dto/dream.dto';
+import { DreamByCategoryCountDto, DreamDto } from './dto/dream.dto';
 import { plainToInstance } from 'class-transformer';
 import { EntityManager } from 'typeorm';
 import { SymbolService } from '../symbol/symbol.service';

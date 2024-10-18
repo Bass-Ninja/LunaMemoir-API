@@ -1,7 +1,7 @@
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
-  BadRequestException,
 } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import {
