@@ -60,30 +60,30 @@ export class DreamService {
     this.logger.log(`User ${user.email} creating dream`);
     const { title, description, mood, category, symbols } = createDreamDto;
     const { email } = user;
-    const userEntity = await this.usersRepository.findOne({
-      where: { email },
-    });
-    const symbolsEntities =
-      await this.symbolService.getOrCreateSymbols(symbols);
-    const categoryEntity =
-      await this.dreamCategoryService.getOrCreateDreamCategory(category);
-    const moodEntity = await this.moodService.getOrCreateMood(mood);
-    const dream: Dream = this.dreamRepository.create({
-      title,
-      description,
-      mood: moodEntity,
-      category: categoryEntity,
-      symbols: symbolsEntities,
-    });
-    dream.user = userEntity;
-
     try {
+      const userEntity = await this.usersRepository.findOne({
+        where: { email },
+      });
+      const symbolsEntities =
+        await this.symbolService.getOrCreateSymbols(symbols);
+      const categoryEntity =
+        await this.dreamCategoryService.getOrCreateDreamCategory(category);
+      const moodEntity = await this.moodService.getOrCreateMood(mood);
+      const dream: Dream = this.dreamRepository.create({
+        title,
+        description,
+        mood: moodEntity,
+        category: categoryEntity,
+        symbols: symbolsEntities,
+      });
+      dream.user = userEntity;
+
       await this.dreamRepository.save(dream);
+      return plainToInstance(DreamDto, dream);
     } catch (error) {
       console.error('Error creating dream:', error);
       throw error;
     }
-    return plainToInstance(DreamDto, dream);
   }
 
   async updateDream(
